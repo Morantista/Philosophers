@@ -6,13 +6,13 @@
 /*   By: cballet <cballet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 18:01:11 by cballet           #+#    #+#             */
-/*   Updated: 2024/10/09 17:09:32 by cballet          ###   ########.fr       */
+/*   Updated: 2024/10/11 15:47:44 by cballet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/philo.h"
 
-void	init_struct_info(int argc, char **argv, t_general_info *info)
+void	ft_init_struct_info(int argc, char **argv, t_general_info *info)
 {
 	info->nbr_philo = ft_atoi(argv[1]);
 	info->time_to_die = ft_atoi(argv[2]);
@@ -21,10 +21,12 @@ void	init_struct_info(int argc, char **argv, t_general_info *info)
 	info->nbr_of_times_each_philo_must_eat = -1;
 	if (argc == 6)
 		info->nbr_of_times_each_philo_must_eat = ft_atoi(argv[5]);
+	else
+		info->nbr_of_times_each_philo_must_eat = -1;
 	info->start_time = ft_timestamp_ms();
 }
 
-void	init_struct_philo(int argc, char **argv, t_general_info *info,
+void	ft_init_struct_philo(int argc, char **argv, t_general_info *info,
 		t_philo *philo)
 {
 	int	i;
@@ -37,7 +39,6 @@ void	init_struct_philo(int argc, char **argv, t_general_info *info,
 		philo[i].dead = 0;
 		philo[i].time_last_meal = info->start_time;
 		philo[i].nbr_meal = philo->info->nbr_of_times_each_philo_must_eat;
-		philo[i].finish_diner = 0;
 		if (i == info->nbr_philo - 1)
 			philo[i].mutex_right_fork = &philo[0].mutex_left_fork;
 		else
@@ -46,34 +47,38 @@ void	init_struct_philo(int argc, char **argv, t_general_info *info,
 	}
 }
 
-void	init_mutex(t_general_info *info, t_philo *philo, t_share *share)
+void	ft_init_mutex(t_general_info *info, t_philo *philo, t_share *share)
 {
 	int	i;
 
 	i = 0;
 	pthread_mutex_init(&(share->mutex_write), NULL);
+	pthread_mutex_init(&(share->mutex_nbr_philo_dead), NULL);
 	while (i < info->nbr_philo)
 	{
-		pthread_mutex_init(&philo[i].mutex_left_fork, NULL);
-		pthread_mutex_init(&philo[i].mutex_philo_dead, NULL);
-		pthread_mutex_init(&philo[i].mutex_finish_diner, NULL);
-		pthread_mutex_init(&philo[i].mutex_time_eat, NULL);
+		pthread_mutex_init(&(philo[i].mutex_left_fork), NULL);
+		pthread_mutex_init(&(philo[i].mutex_philo_dead), NULL);
+		pthread_mutex_init(&(philo[i].share->mutex_finish_diner), NULL);
+		pthread_mutex_init(&(philo[i].mutex_time_eat), NULL);
 		i++;
 	}
 }
-void	init_struct_share(int argc, char **argv, t_general_info *info,
+
+void	ft_init_struct_share(int argc, char **argv, t_general_info *info,
 		t_philo *philo, t_share *share)
 {
 	share->philo = philo;
 	share->nbr_philo_finish = 0;
-	share->nbr_philo_dead = 0;
+	share->nbr_philo_dead = share->philo->dead;
+	share->nbr_philo_finish = 0;
 	share->stop = 0;
 }
-void	init_table(int argc, char **argv, t_general_info *info, t_philo *philo,
-		t_share *share)
+
+void	ft_init_struct(int argc, char **argv, t_general_info *info,
+		t_philo *philo, t_share *share)
 {
-	init_mutex(info, philo, share);
-	init_struct_info(argc, argv, info);
-	init_struct_philo(argc, argv, info, philo);
-	init_struct_share(argc, argv, info, philo, share);
+	ft_init_mutex(info, philo, share);
+	ft_init_struct_info(argc, argv, info);
+	ft_init_struct_philo(argc, argv, info, philo);
+	ft_init_struct_share(argc, argv, info, philo, share);
 }
