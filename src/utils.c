@@ -6,7 +6,7 @@
 /*   By: cballet <cballet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 16:39:19 by cballet           #+#    #+#             */
-/*   Updated: 2024/10/11 17:03:10 by cballet          ###   ########.fr       */
+/*   Updated: 2024/10/16 19:29:46 by cballet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ unsigned long	ft_timestamp_ms(void)
 	return (timestamp_ms);
 }
 
-void	ft_writing_status(char *str, t_philo *philo, const char *color,
+void	ft_writing_status(char *str, t_monitor *monitor, const char *color,
 		unsigned long timestamp)
 {
 	unsigned long time;
 
-	time = timestamp - philo->info->start_time;
-	if (time >= 0 && (ft_dead_flag(philo) != 0))
+	time = timestamp - monitor->info->start_time;
+	if (time >= 0 && (ft_dead_flag(monitor) != 0))
 		return ;
-	pthread_mutex_lock(&philo->share->mutex_write);
-	printf(" %s%ld %d  %s%s/n", color, time, philo->id, str, NO_COLOR);
-	pthread_mutex_unlock(&philo->share->mutex_write);
+	pthread_mutex_lock(&monitor->share->mutex_write);
+	printf(" %s%ld %d  %s%s/n", color, time, monitor->philo->id, str, NO_COLOR);
+	pthread_mutex_unlock(&monitor->share->mutex_write);
 }

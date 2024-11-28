@@ -6,26 +6,31 @@
 /*   By: cballet <cballet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 11:01:05 by cballet           #+#    #+#             */
-/*   Updated: 2024/10/10 13:05:59 by cballet          ###   ########.fr       */
+/*   Updated: 2024/11/28 16:11:44 by cballet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/philo.h"
 
-void	ft_create_philosopher_threads(t_general_info *info, t_philo *philo)
+void	ft_create_philosopher_threads(t_monitor *monitor)
 {
 	int	i;
 
 	i = 0;
-	while (i < info->nbr_philo)
+	printf("je suis rentre dans philo_thread\n");
+	while (i < monitor->info->nbr_philo)
 	{
-		pthread_create(&philo[i].thread_id, NULL, ft_routine, &philo[i] != 0);
+		printf("je rentre dans la boucle philo_thread\n");
+		pthread_create(&(monitor->philo[i].thread_id), NULL, ft_routine, &monitor->philo[i]);
 		i++;
 	}
+	printf("je suis passe dans philo_thread\n");
+
 }
 
 
-void	ft_create_monitoring_thread(t_share *share, t_philo *philo)
+void	ft_create_monitoring_thread(t_monitor *monitor)
 {
-	pthread_create(share->monitor, NULL, ft_monitoring, (void *)philo);
+	pthread_create(&(monitor->monitor), NULL, ft_monitoring, (void *)monitor->philo);
+	printf("je suis rentre dans monitoring_thread");
 }
