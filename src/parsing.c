@@ -6,7 +6,7 @@
 /*   By: cballet <cballet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:33:57 by cballet           #+#    #+#             */
-/*   Updated: 2024/10/17 19:32:45 by cballet          ###   ########.fr       */
+/*   Updated: 2024/12/12 18:11:50 by cballet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,35 +24,31 @@ void	ft_putstr_error(char *str)
 	}
 }
 
-int	ft_atoi(char *str)
+int	ft_atoi(char *str, int result)
 {
 	int			i;
-	long int	result;
 	int			sign;
 
 	i = 0;
 	sign = 1;
+	printf("je rentre dans atoi\n");
 	while ((str[i] >= 9 && str[i] <= 13) || (str[i] == 32 && str[i] != '\0'))
 		i++;
-	printf("atoi check1\n");
 	if (str[i] == '-')
 		sign *= -1;
-	printf("atoi check2\n");
 	if (str[i] == '+' || str[i] == '-')
 		i++;
 	result = 0;
-	printf("atoi check3\n");
+
 	while (str[i] >= '0' && str[i] <= '9' && str[i] != '\0')
 	{
 		result = (result * 10) + str[i] - 48;
-		printf("atoi check4\n");
 		i++;
 	}
 	if ((result > (2147483647 / 10)) || (result == (2147483647 / 10))
 		|| ((str[i] - 48) > 2147483647 % 10))
 		return (-1);
-	printf("atoi check5\n");
-	printf("resultat atoi %ld\n", result);
+	printf("resultat atoi %d\n", result);
 	return ((int)result * sign);
 }
 
@@ -92,7 +88,7 @@ int	ft_is_overflow(char *argv)
 {
 	int	res;
 
-	res = ft_atoi(argv);
+	res = ft_atoi(argv, res);
 	printf("%d\n", res);
 	if (res == -1)
 		return (0);

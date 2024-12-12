@@ -24,6 +24,9 @@ typedef struct s_info
 	int				time_to_sleep;
 	int				nbr_of_times_each_philo_must_eat;
 	unsigned long	start_time;
+	int				nbr_philo_finish;
+	int				stop;
+	pthread_mutex_t	mutex_write;
 }					t_info;
 /*Contient les paramètres de simulation qui sont communs à tous les philosophes.*/
 
@@ -45,32 +48,17 @@ typedef struct s_philo
 	pthread_mutex_t	mutex_left_fork;
 
 }					t_philo;
-/*Contient les informations propres à chaque philosophe,
-	avec des pointeurs vers les ressources partagées.*/
-
-typedef struct s_share
-{
-	t_philo			*philo;
-	int				nbr_philo_finish;
-	int				nbr_philo_dead;
-	pthread_mutex_t	mutex_nbr_philo_dead;
-	int				stop;
-	pthread_mutex_t	mutex_write;
-}					t_share;
-/*Contient les mutex et les variables de contrôle partagées entre tous les philosophes.*/
 
 typedef struct s_monitor
 {
 	t_info			*info;
 	t_philo			*philo;
-	t_share			*share;
+
 	pthread_t		monitor;
 
 }					t_monitor;
-/*Contient le moniteur principal ainsi que le thread pour gerer la simulation a distance*/
 
 // UTILS
-int					ft_atoi(char *str);
 unsigned long		ft_timestamp_ms(void);
 void				ft_writing_status(char *str, t_monitor *monitor,
 						const char *color, unsigned long timestamp);
@@ -92,6 +80,11 @@ void				ft_create_monitoring_thread(t_monitor *monitor);
 void				*ft_monitoring(void *philosopher);
 
 // PARSING
-int					ft_atoi(char *str);
+int					ft_atoi(char *str, int result);
 void				ft_parsing(int argc, char **argv);
+void				ft_is_error(int code_error);
+
+// UTILS COUNT
+void				ft_count_philo_finish(t_monitor *monitor);
+void				ft_count_philo_died(t_monitor *monitor);
 #endif

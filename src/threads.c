@@ -6,7 +6,7 @@
 /*   By: cballet <cballet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 11:01:05 by cballet           #+#    #+#             */
-/*   Updated: 2024/11/28 16:11:44 by cballet          ###   ########.fr       */
+/*   Updated: 2024/12/11 20:56:48 by cballet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@ void	ft_create_philosopher_threads(t_monitor *monitor)
 
 void	ft_create_monitoring_thread(t_monitor *monitor)
 {
-	pthread_create(&(monitor->monitor), NULL, ft_monitoring, (void *)monitor->philo);
+	pthread_create(&(monitor->monitor), NULL, ft_monitoring, (void *)monitor);
 	printf("je suis rentre dans monitoring_thread");
 }

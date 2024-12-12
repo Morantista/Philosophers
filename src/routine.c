@@ -6,7 +6,7 @@
 /*   By: cballet <cballet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 11:15:05 by cballet           #+#    #+#             */
-/*   Updated: 2024/11/28 21:55:06 by cballet          ###   ########.fr       */
+/*   Updated: 2024/12/12 17:48:13 by cballet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,33 +16,10 @@ int	ft_dead_flag(t_monitor *monitor)
 {
 	int	dead;
 
-	pthread_mutex_lock(&monitor->share->mutex_nbr_philo_dead);
-	dead = monitor->share->nbr_philo_dead;
-	pthread_mutex_unlock(&monitor->share->mutex_nbr_philo_dead);
-	return (dead);
-}
-
-void	ft_count_philo_finish(t_monitor *monitor)
-{
-	unsigned long	time_in_ms;
-
-	time_in_ms = ft_timestamp_ms();
-	pthread_mutex_lock(&monitor->philo->mutex_finish_diner);
-	monitor->share->nbr_philo_finish++;
-	pthread_mutex_unlock(&monitor->philo->mutex_finish_diner);
-	ft_writing_status("A PHILO FINISH DINER", monitor, GREEN,time_in_ms);
-}
-
-void	ft_count_philo_died(t_monitor *monitor)
-{
-	unsigned long	time_in_ms;
-
-	time_in_ms = ft_timestamp_ms();
-	ft_writing_status("A PHILO DIED", monitor, RED,time_in_ms);
 	pthread_mutex_lock(&monitor->philo->mutex_philo_dead);
-	monitor->philo->dead++;
+	dead = monitor->philo->dead;
 	pthread_mutex_unlock(&monitor->philo->mutex_philo_dead);
-
+	return (dead);
 }
 
 void	ft_eating(t_monitor *monitor)
@@ -114,29 +91,28 @@ void	ft_one_philo(t_monitor *monitor)
 
 void	*ft_routine(void *thread_id)
 {
-	t_philo			*philo;
-	t_monitor *monitor;
+	t_monitor	*monitor;
 	unsigned long	time_in_ms;
 
 	printf("je rentre dans la routine \n");
-	monitor->philo = (t_philo *)thread_id;
+	monitor = (t_monitor *)thread_id;
 	time_in_ms = ft_timestamp_ms();
-	if (monitor->philo->info->nbr_philo == 1)
+	if (monitor->info->nbr_philo == 1)
 	{
 		ft_one_philo(monitor);
 		printf("je rentre dans le if 1 de la routine \n");
 	}
-	if (monitor->philo->info->time_to_eat > monitor->philo->info->time_to_die)
+	if (monitor->info->time_to_eat > monitor->info->time_to_die)
 	{
 		ft_count_philo_died(monitor);
 		printf("je rentre dans le if 2 de la routine \n");
 	}
-	if (philo->id % 2 != 0)
+	if (monitor->philo->id % 2 != 0)
 	{
-		usleep(philo->info->time_to_eat * 1000);
+		usleep(monitor->info->time_to_eat * 1000);
 		printf("je rentre dans le if 3 de la routine \n");
 	}
-	while (ft_dead_flag == 0)
+	while (ft_dead_flag(monitor) == 0)
 	{
 		printf("je rentre dans la boucle de la routine \n");
 		ft_eating(monitor);

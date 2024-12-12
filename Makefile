@@ -6,7 +6,7 @@
 #    By: cballet <cballet@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/23 12:10:40 by cballet           #+#    #+#              #
-#    Updated: 2024/10/17 18:56:43 by cballet          ###   ########.fr        #
+#    Updated: 2024/12/12 17:46:19 by cballet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ NC = \033[0m
 SRC_DIR = ./src/
 OBJ_DIR = ./obj/
 
-SRC = init_struct main parsing monitoring parsing_utils routine threads utils
+SRC = init_struct main parsing monitoring parsing_utils routine threads utils utils_count
 
 SRC_MANDATORY = $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC)))
 OBJ_MANDATORY = $(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC)))

@@ -6,7 +6,7 @@
 /*   By: cballet <cballet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 13:21:26 by cballet           #+#    #+#             */
-/*   Updated: 2024/11/28 17:30:28 by cballet          ###   ########.fr       */
+/*   Updated: 2024/12/12 17:43:15 by cballet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_philos_get_finished(t_philo *philo, t_monitor *monitor)
 	int	philo_finish;
 
 	pthread_mutex_lock(&philo->mutex_finish_diner);
-	philo_finish = monitor->share->nbr_philo_finish;
+	philo_finish = monitor->info->nbr_philo_finish;
 	pthread_mutex_unlock(&philo->mutex_finish_diner);
 	return (philo_finish);
 }
@@ -56,8 +56,8 @@ void	*ft_monitoring(void *philosopher)
 	int				philo_finish;
 	unsigned long	time_in_ms;
 	unsigned long	time_last_meal;
-
-	philo = (t_philo *)philosopher;
+	monitor = (t_monitor*)philosopher;
+	philo = monitor->philo;
 	i = 0;
 	while (1)
 	{
